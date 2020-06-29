@@ -1,4 +1,4 @@
-module github.com/scripter-v/alfa_ynab
+module github.com/scripter-v/alfa2ynab
 
 go 1.14
 
