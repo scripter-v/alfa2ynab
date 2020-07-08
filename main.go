@@ -17,7 +17,7 @@ import (
 
 var (
 	descrCRDRe  = regexp.MustCompile(` [^ ]+?\\.+?\\.+?\\.+?\\(.+?)  `)
-	descrHOLDRe = regexp.MustCompile(`^[^ ]+ +?([^>]+)`)
+	descrHOLDRe = regexp.MustCompile(`^(?:[0-9]+ )?[^ ]+ +?([^>]+)`)
 )
 
 type Date struct {
