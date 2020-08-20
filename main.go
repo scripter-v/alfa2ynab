@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	descrCRDRe  = regexp.MustCompile(` [^ ]+?\\.+?\\.+?\\.+?\\(.+?)  `)
+	descrCRDRe  = regexp.MustCompile(` [^ ]+?\\.+?\\.+?\\(?:.+?\\)?(.+?)  `)
 	descrHOLDRe = regexp.MustCompile(`^(?:[0-9]+ )?[^ ]+ +?([^>]+)`)
 )
 
@@ -25,7 +25,7 @@ type Date struct {
 }
 
 func (date *Date) MarshalCSV() (string, error) {
-	return date.Time.Format("01/02/2006"), nil
+	return date.Time.Format("2006-01-02"), nil
 }
 
 func (date *Date) UnmarshalCSV(csv string) (err error) {
@@ -93,8 +93,14 @@ func main() {
 			outOp.Payee = getFirstMatch(inOp.Description, descrHOLDRe)
 		} else if strings.HasPrefix(inOp.Reference, "CRD_") {
 			outOp.Payee = getFirstMatch(inOp.Description, descrCRDRe)
+		} else if strings.HasPrefix(inOp.Reference, "PML") {
+			outOp.Payee = "Проценты на остаток по счету"
+			outOp.Memo = inOp.Description
 		} else if strings.HasPrefix(inOp.Reference, "MOPJ") {
 			outOp.Payee = "Плата за оповещения об операциях"
+			outOp.Memo = inOp.Description
+		} else if strings.HasPrefix(inOp.Reference, "MPL1_") {
+			outOp.Payee = "Вознаграждение за операции покупок по спецпредложениям"
 			outOp.Memo = inOp.Description
 		} else if strings.HasPrefix(inOp.Reference, "C") {
 			outOp.Payee = "Перевод"
